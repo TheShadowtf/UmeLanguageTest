@@ -2,6 +2,10 @@
 .vs/
 bin/
 obj/
+obj/Debug/ref
 
 # Files
 *.user
+obj/Debug/*.cs
+obj/*.json
+obj/*.cache
