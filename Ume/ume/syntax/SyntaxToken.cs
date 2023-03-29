@@ -1,7 +1,15 @@
+using Ume.Diagnostics;
+
 namespace Ume.Syntax
 {
     public class SyntaxToken : SyntaxNode
     {
+        public override SyntaxKind Kind { get; }
+        public int Pos { get; }
+        public string Text { get; }
+        public object Value { get; }
+        public TextSpan Span => new TextSpan(Pos, Text.Length);
+
         public SyntaxToken(SyntaxKind kind, int pos, string text, object value)
         {
             Text = text;
@@ -9,11 +17,6 @@ namespace Ume.Syntax
             Kind = kind;
             Value = value;
         }
-
-        public override SyntaxKind Kind { get; }
-        public int Pos { get; }
-        public string Text { get; }
-        public object Value { get; }
 
         public override IEnumerable<SyntaxNode> GetChildren()
         {

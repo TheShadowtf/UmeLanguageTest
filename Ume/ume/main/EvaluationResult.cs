@@ -1,11 +1,11 @@
-namespace Ume.Main
+namespace Ume.Diagnostics
 {
     public sealed class EvaluationResult
     {
-        public IReadOnlyList<string> Diag { get; }
+        public IReadOnlyList<Diagnostic> Diag { get; }
         public object Value { get; }
 
-        public EvaluationResult(IEnumerable<string> diag, object value)
+        public EvaluationResult(IEnumerable<Diagnostic> diag, object value)
         {
             Diag = diag.ToArray();
             Value = value;

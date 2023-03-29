@@ -1,7 +1,5 @@
-﻿using System;
-using Ume.Main;
+﻿using Ume.Main;
 using Ume.Syntax;
-using Ume.Binding;
 
 namespace Ume
 {
@@ -62,12 +60,28 @@ namespace Ume
                     Console.WriteLine(result.Value);
                 } else
                 {
-                    Console.ForegroundColor = ConsoleColor.DarkRed;
-
                     foreach (var diag in syntaxTree.Diagnostics)
+                    {
+                        Console.WriteLine();
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
                         Console.WriteLine(diag);
+                        Console.ResetColor();
 
-                    Console.ResetColor();
+                        var prefix = line.Substring(0, diag.Span.Start);
+                        var error = line.Substring(diag.Span.Start, diag.Span.Length);
+                        var suffix  = line.Substring(diag.Span.End);
+
+                        Console.Write("    ");
+                        Console.Write(prefix);
+
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                        Console.Write(error);
+                        Console.ResetColor();
+
+                        Console.Write(suffix);
+
+                        Console.WriteLine();
+                    }
                 }
             }
         }

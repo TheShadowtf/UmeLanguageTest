@@ -1,5 +1,6 @@
 using Ume.Expressions;
 using Ume.Syntax;
+using Ume.Diagnostics;
 
 namespace Ume.Main
 {
@@ -7,7 +8,7 @@ namespace Ume.Main
     {
         private readonly SyntaxToken[] _tokens;
         private int _pos;
-        private List<string> _diag = new List<string>();
+        private DiagnosticBag _diag = new DiagnosticBag();
 
         public Parser(string text)
         {
@@ -29,7 +30,7 @@ namespace Ume.Main
             _diag.AddRange(lexer.Diagnostics);
         }
 
-        public IEnumerable<string> Diagnostics => _diag;
+        public DiagnosticBag Diagnostics => _diag;
 
         private SyntaxToken Peek(int offset)
         {
@@ -54,8 +55,15 @@ namespace Ume.Main
             if (Current.Kind == kind)
                 return NextToken();
 
-            _diag.Add($"ERROR: Unexpected token <{Current.Kind}>, expected <{kind}>");
+            _diag.ReportUnexpectedToken(Current.Span, Current.Kind, kind);
             return new SyntaxToken(kind, Current.Pos, null, null);
+        }
+
+        public SyntaxTree Parse()
+        {
+            var expression = ParseExpression();
+            var endOfFile = MatchToken(SyntaxKind.EndOfFileToken);
+            return new SyntaxTree(_diag, expression, endOfFile);
         }
 
         private ExpressionSyntax ParseExpression(int parentPrecedence = 0)
@@ -83,13 +91,6 @@ namespace Ume.Main
                 left = new BinaryExpressionSyntax(left, operatorToken, right);
             }
             return left;
-        }
-
-        public SyntaxTree Parse()
-        {
-            var expression = ParseExpression();
-            var endOfFile = MatchToken(SyntaxKind.EndOfFileToken);
-            return new SyntaxTree(_diag, expression, endOfFile);
         }
 
         private ExpressionSyntax ParsePrimaryExpression()
