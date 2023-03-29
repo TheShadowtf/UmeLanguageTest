@@ -44,10 +44,10 @@ namespace Ume
                 }
 
                 var syntaxTree = SyntaxTree.Parse(line);
-                var binder = new Binder();
-                var boundExpression = binder.BindExpression(syntaxTree.Root);
+                var compilation = new Compilation(syntaxTree);
+                var result = compilation.Evaluate();
 
-                var diagnostics = syntaxTree.Diagnostics.Concat(binder.Diag).ToArray();
+                var diagnostics = result.Diag;
 
                 if (showTree)
                 {
@@ -58,9 +58,8 @@ namespace Ume
 
                 if (!diagnostics.Any())
                 {
-                    var e = new Evaluator(boundExpression);
-                    var result = e.Evaluate();
-                    Console.WriteLine(result);
+                    
+                    Console.WriteLine(result.Value);
                 } else
                 {
                     Console.ForegroundColor = ConsoleColor.DarkRed;

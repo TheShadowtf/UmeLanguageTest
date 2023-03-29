@@ -1,5 +1,4 @@
 using Ume.Expressions;
-using Ume.Syntax;
 using Ume.Binding;
 
 namespace Ume.Main
