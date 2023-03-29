@@ -2,9 +2,6 @@
 .vs/
 bin/
 obj/
-Debug/
-Compiler/bin/
-Compiler/obj/
 
 # Files
 *.user
