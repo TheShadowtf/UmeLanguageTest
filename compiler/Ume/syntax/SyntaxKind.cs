@@ -1,4 +1,4 @@
-namespace Ume
+namespace Ume.Syntax
 {
     public enum SyntaxKind
     {

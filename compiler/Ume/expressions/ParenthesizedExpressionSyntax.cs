@@ -1,4 +1,6 @@
-namespace Ume
+using Ume.Syntax;
+
+namespace Ume.Expressions
 {
     sealed class ParenthesizedExpressionSyntax : ExpressionSyntax
     {

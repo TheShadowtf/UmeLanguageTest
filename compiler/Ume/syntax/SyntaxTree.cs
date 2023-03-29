@@ -1,6 +1,9 @@
-namespace Ume
+using Ume.Expressions;
+using Ume.Main;
+
+namespace Ume.Syntax
 {
-    sealed class SyntaxTree
+    public sealed class SyntaxTree
     {
         public SyntaxTree(IEnumerable<string> diagnostics, ExpressionSyntax root, SyntaxToken endOfFile)
         {

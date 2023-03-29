@@ -1,6 +1,6 @@
-namespace Ume
+namespace Ume.Syntax
 {
-    class SyntaxToken : SyntaxNode
+    public sealed class SyntaxToken : SyntaxNode
     {
         public SyntaxToken(SyntaxKind kind, int _pos, string text, object value)
         {

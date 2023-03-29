@@ -1,6 +1,8 @@
-namespace Ume
+using Ume.Syntax;
+
+namespace Ume.Main
 {
-    class Lexer
+    internal sealed class Lexer
     {
         private readonly string _text;
         private int _pos;

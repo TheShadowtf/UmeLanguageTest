@@ -1,8 +1,12 @@
-﻿namespace Ume
+﻿using Ume.Main;
+using Ume.Syntax;
+using Ume.Expressions;
+
+namespace Ume
 {
-    class Program
+    internal static class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             var showTree = false;
             while (true)
