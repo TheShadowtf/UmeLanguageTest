@@ -1,6 +1,9 @@
 # Directories
 .vs/
 bin/
+obj/
+Compiler/bin/
+Compiler/obj/
 
 # Files
 *.user
