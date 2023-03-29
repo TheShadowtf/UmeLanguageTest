@@ -2,6 +2,7 @@
 .vs/
 bin/
 obj/
+Debug/
 Compiler/bin/
 Compiler/obj/
 
