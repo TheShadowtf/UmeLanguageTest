@@ -30,7 +30,7 @@ namespace Ume.Main
             _pos++;
         }
 
-        public SyntaxToken NextToken()
+        public SyntaxToken Lex()
         {
             if (_pos >= _text.Length)
                 return new SyntaxToken(SyntaxKind.EndOfFileToken, _pos, "\0", null);

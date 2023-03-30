@@ -1,13 +1,14 @@
 using Ume.Expressions;
 using Ume.Syntax;
+using Ume.Binding;
 
 namespace Ume.Main
 {
-    public sealed class Evaluator
+    internal sealed class Evaluator
     {
-        private readonly ExpressionSyntax _root;
+        private readonly BoundExpression _root;
 
-        public Evaluator(ExpressionSyntax root)
+        public Evaluator(BoundExpression root)
         {
             _root = root;
         }
@@ -17,32 +18,45 @@ namespace Ume.Main
             return EvaluateExpression(_root);
         }
 
-        private int EvaluateExpression(ExpressionSyntax node)
+        private int EvaluateExpression(BoundExpression node)
         {
-            if (node is LiteralExpressionSyntax n)
-                return (int) n.LiteralToken.Value;
+            if (node is BoundLiteralExpression n)
+                return (int) n.Value;
 
-            if (node is BinaryExpressionSyntax b)
+            if (node is BoundUnaryExpression u)
+            {
+                var operand = EvaluateExpression(u.Operand);
+
+                switch (u.Op)
+                {
+                    case BoundUnaryOperatorKind.Identity:
+                        return (int)operand;
+                    case BoundUnaryOperatorKind.Negation:
+                        return -(int)operand;
+                    default:
+                        throw new Exception($"Unexpected unary operator {u.Op}");
+                }
+            }
+
+            if (node is BoundBinaryExpression b)
             {
                 var left = EvaluateExpression(b.Left);
                 var right = EvaluateExpression(b.Right);
 
-                switch (b.OperatorToken.Kind)
+                switch (b.Op)
                 {
-                    case SyntaxKind.PlusToken:
+                    case BoundBinaryOperatorKind.Addition:
                         return (int)left + (int)right;
-                    case SyntaxKind.MinusToken:
+                    case BoundBinaryOperatorKind.Subtraction:
                         return (int)left - (int)right;
-                    case SyntaxKind.StarToken:
+                    case BoundBinaryOperatorKind.Multiplication:
                         return (int)left * (int)right;
-                    case SyntaxKind.SlashToKen:
+                    case BoundBinaryOperatorKind.Division:
                         return (int)left / (int)right;
                     default:
-                        throw new Exception($"Unexpected binary operator {b.OperatorToken.Kind}");
+                        throw new Exception($"Unexpected binary operator {b.Op}");
                 }
             }
-            if (node is ParenthesizedExpressionSyntax p)
-                return EvaluateExpression(p.Expression);
             throw new Exception($"Unexpected node {node.Kind}");
         }
     }

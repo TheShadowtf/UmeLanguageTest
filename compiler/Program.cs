@@ -1,6 +1,6 @@
 ﻿using Ume.Main;
 using Ume.Syntax;
-using Ume.Expressions;
+using Ume.Binding;
 
 namespace Ume
 {
@@ -42,6 +42,9 @@ namespace Ume
                 }
 
                 var syntaxTree = SyntaxTree.Parse(line);
+                var binder = new Binder();
+                var boundExpression = binder.BindExpression(syntaxTree.Root);
+                var diagnostics = syntaxTree.Diagnostics.Concat(binder.Diagnostics).ToArray();
 
                 if (showTree)
                 {
@@ -50,16 +53,16 @@ namespace Ume
                     Console.ResetColor();
                 }
 
-                if (!syntaxTree.Diagnostics.Any())
+                if (!diagnostics.Any())
                 {
-                    var e = new Evaluator(syntaxTree.Root);
+                    var e = new Evaluator(boundExpression);
                     var result = e.Evaluate();
                     Console.WriteLine(result);
                 }
                 else
                 {
                     Console.ForegroundColor = ConsoleColor.DarkRed;
-                    foreach (var diagnostics in syntaxTree.Diagnostics)
+                    foreach (var diagnostic in syntaxTree.Diagnostics)
                         Console.WriteLine(diagnostics);
                     Console.ResetColor();
                 }
